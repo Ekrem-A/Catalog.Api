@@ -11,6 +11,21 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // ═══════════════════════════════════════════════════════════
+    // RAILWAY DATABASE_URL SUPPORT
+    // ═══════════════════════════════════════════════════════════
+    
+    // Railway provides DATABASE_URL in postgres:// format
+    // Convert it to .NET connection string format
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    if (!string.IsNullOrEmpty(databaseUrl))
+    {
+        var uri = new Uri(databaseUrl);
+        var userInfo = uri.UserInfo.Split(':');
+        var connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+        builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
+    }
+
+    // ═══════════════════════════════════════════════════════════
     // SERILOG CONFIGURATION
     // ═══════════════════════════════════════════════════════════
     
@@ -233,11 +248,9 @@ using (var scope = app.Services.CreateScope())
 // ═══════════════════════════════════════════════════════════
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Enable Swagger in all environments for Railway
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Health check endpoint (before authentication)
 app.MapHealthChecks("/health");

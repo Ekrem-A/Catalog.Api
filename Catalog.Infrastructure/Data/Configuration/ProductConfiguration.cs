@@ -14,7 +14,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Id)
             .HasColumnName("id")
-            .HasDefaultValueSql("NEWID()");
+            .HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(p => p.Name)
             .HasColumnName("name")
@@ -37,16 +37,16 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Price)
             .HasColumnName("price")
-            .HasColumnType("decimal(18,2)")
+            .HasColumnType("numeric(18,2)")
             .IsRequired();
 
         builder.Property(p => p.OriginalPrice)
             .HasColumnName("original_price")
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("numeric(18,2)");
 
         builder.Property(p => p.Description)
             .HasColumnName("description")
-            .HasColumnType("nvarchar(max)");
+            .HasColumnType("text");
 
         builder.Property(p => p.InStock)
             .HasColumnName("in_stock")
@@ -58,7 +58,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Rating)
             .HasColumnName("rating")
-            .HasColumnType("decimal(2,1)")
+            .HasColumnType("numeric(2,1)")
             .HasDefaultValue(0);
 
         builder.Property(p => p.ReviewCount)
@@ -67,11 +67,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Images)
             .HasColumnName("images")
-            .HasColumnType("nvarchar(max)");
+            .HasColumnType("text");
 
         builder.Property(p => p.Tags)
             .HasColumnName("tags")
-            .HasColumnType("nvarchar(max)");
+            .HasColumnType("text");
 
         builder.Property(p => p.Featured)
             .HasColumnName("featured")
@@ -98,11 +98,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.CreatedAt)
             .HasColumnName("created_at")
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.Property(p => p.UpdatedAt)
             .HasColumnName("updated_at")
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         // Relationships
         builder.HasOne(p => p.Brand)

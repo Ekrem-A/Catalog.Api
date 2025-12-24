@@ -15,7 +15,7 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
 
         builder.Property(b => b.Id)
             .HasColumnName("id")
-            .HasDefaultValueSql("NEWID()");
+            .HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(b => b.Name)
             .HasColumnName("name")
@@ -31,7 +31,7 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
 
         builder.Property(b => b.Description)
             .HasColumnName("description")
-            .HasColumnType("nvarchar(max)");
+            .HasColumnType("text");
 
         builder.Property(b => b.LogoUrl)
             .HasColumnName("logo_url")
@@ -51,10 +51,10 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
 
         builder.Property(b => b.CreatedAt)
             .HasColumnName("created_at")
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
         builder.Property(b => b.UpdatedAt)
             .HasColumnName("updated_at")
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
     }
 }
